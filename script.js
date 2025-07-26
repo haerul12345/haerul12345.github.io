@@ -1,12 +1,14 @@
-  function showScreen(id) {
+  
+
+document.addEventListener("DOMContentLoaded", function () {
+  // your code here
+
+function showScreen(id) {
   // Hide all screens
   document.querySelectorAll('.screen').forEach(screen => {
     screen.classList.remove('active');
 	document.getElementById('tabWrapper').style.display = 'none';
   });
-
-document.addEventListener("DOMContentLoaded", function () {
-  // your code here
 
   // Show the selected screen
   document.getElementById(id).classList.add('active');
