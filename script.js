@@ -82,7 +82,11 @@ document.addEventListener("DOMContentLoaded", function () {
     inputRecord.addEventListener("change", parseHostRecord);
   }
 
-  const recordHeader = target.closest('.record-header');
+});
+
+document.addEventListener('click', function (event) {
+  const recordHeader = event.target.closest('.record-header');
+
   // Handle record header click
   if (recordHeader) {
     const recordContent = recordHeader.nextElementSibling;
@@ -90,8 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
       recordContent.style.display = recordContent.style.display === 'block' ? 'none' : 'block';
     }
   }
-
 });
+
 
 // Screen handling
 function showScreen(screenId) {
@@ -1193,6 +1197,71 @@ function parseMTI() {
 }
 
 // Paymark Host Record Parser code
+function populateDropdownsFromSections() {
+  const recordSelect = document.getElementById('recordSelect');
+  const tagSelect = document.getElementById('tagSelect');
+  const valueSelect = document.getElementById('valueSelect');
+  const selector = document.getElementById('recordSelect');
+
+  if (selector) {
+    // Clear existing options
+    selector.innerHTML = '';
+
+    // Add A, X, C Record options
+    const options = [
+      { value: 'A', text: 'A Record' },
+      { value: 'X', text: 'X Record' },
+      { value: 'C', text: 'C Record' }
+    ];
+
+    options.forEach(opt => {
+      const option = document.createElement('option');
+      option.value = opt.value;
+      option.textContent = opt.text;
+      selector.appendChild(option);
+    });
+  }
+
+  // Update Tags when Record changes
+  recordSelect.addEventListener('change', () => {
+    const selectedRecord = recordSelect.options[recordSelect.selectedIndex].textContent;
+    const tags = Object.keys(recordTagValues[selectedRecord] || {});
+    tagSelect.innerHTML = '';
+    tags.forEach(tag => {
+      const option = document.createElement('option');
+      option.value = tag;
+      option.textContent = tag;
+      tagSelect.appendChild(option);
+    });
+
+    tagSelect.dispatchEvent(new Event('change'));
+  });
+
+  // Update Values when Tag changes
+  tagSelect.addEventListener('change', () => {
+    const selectedRecord = recordSelect.options[recordSelect.selectedIndex].textContent;
+    const selectedTag = tagSelect.value;
+    const values = recordTagValues[selectedRecord]?.[selectedTag] || [];
+
+    valueSelect.innerHTML = '';
+    values.forEach(val => {
+      const option = document.createElement('option');
+      option.value = val;
+      option.textContent = val;
+      valueSelect.appendChild(option);
+    });
+  });
+
+  // Trigger initial population
+  recordSelect.dispatchEvent(new Event('change'));
+}
+
+function toggleContentById(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+}
 
 function parseHostRecord() {
   const raw = document.getElementById('inputRecord')?.value;
