@@ -84,9 +84,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+// Record Header Click EventListener
 document.addEventListener('click', function (event) {
   const recordHeader = event.target.closest('.record-header');
-
   // Handle record header click
   if (recordHeader) {
     const recordContent = recordHeader.nextElementSibling;
@@ -95,7 +95,6 @@ document.addEventListener('click', function (event) {
     }
   }
 });
-
 
 // Screen handling
 function showScreen(screenId) {
@@ -117,10 +116,6 @@ function showScreen(screenId) {
     }
   }
 
-  //const de22input = document.getElementById('de22-input');
-  //const de22output = document.getElementById('parse-output');
-  //if (!de22input) de22output.value = '';
-
   const input = document.getElementById('json-input');
   if (input) input.value = '';
 
@@ -140,7 +135,7 @@ function showScreen(screenId) {
   if (tableRequest) {
     tableRequest.innerHTML = '';
   }
-  const inputMTI = document.getElementById('combinedInput');
+  const inputMTI = document.getElementById('mti-data-input');
   if (inputMTI) inputMTI.value = '';
 
 }
@@ -169,6 +164,7 @@ function parseAXL() {
   }
 }
 
+// Function to generate HTML table from JSON data
 function generateTable(data) {
   let table = '<table><thead><tr><th class="key-column">Key</th><th class="value-column">Value</th></thead><tbody>';
   table += formatTableRows(data);
@@ -176,6 +172,7 @@ function generateTable(data) {
   return table;
 }
 
+// Function to format JSON data into table rows
 function formatTableRows(data, indentLevel = 0) {
   let rows = '';
   const indent = '&nbsp;'.repeat(indentLevel * 4);
@@ -194,6 +191,7 @@ function formatTableRows(data, indentLevel = 0) {
   return rows;
 }
 
+// Function to copy the generated table to clipboard
 function copyTable() {
   const table = document.querySelector('#json-output table');
   if (table) {
@@ -211,7 +209,7 @@ function copyTable() {
   }
 }
 
-// Alert Icon def
+// Alert Icons
 const alertIcons = {
   error: `<div style="font-size: 2.5em; text-align: center;">  
 	<svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -253,6 +251,7 @@ function showAlert(message, type = 'info') {
   document.getElementById('customAlert').style.display = 'block';
 }
 
+// Close Alert function
 function closeAlert() {
   document.getElementById('customAlert').style.display = 'none';
   document.getElementById("overlay").style.display = "none";
@@ -265,8 +264,10 @@ function resizeparsedDataOutput() {
   parsedDataOutput.style.height = parsedDataOutput.scrollHeight + 'px';
 }
 
+// Variable to track if DE22 input was previously filled
 let wasPreviouslyFilled = false;
 
+// Function to display parsed data from DE22 input
 function displayParsedData() {
   const cardData = document.getElementById('de22-input').value;
 
@@ -288,6 +289,7 @@ function displayParsedData() {
   resizeparsedDataOutput();
 }
 
+// Function to parse card data from DE22 input
 function parseCardData(cardData) {
   const definitions = {
     cardDataInputCapability: {
@@ -448,6 +450,7 @@ function parseCardData(cardData) {
   return parsedData;
 }
 
+// POS Data Definitions
 const posDataDefinitions = {
   '(Pos 1) The card data input capability  of the terminal': {
     '0': 'Unknown',
@@ -587,6 +590,7 @@ const posDataDefinitions = {
   }
 };
 
+// Function to display definitions in a modal-like container
 function displayDefinitions() {
   const existingContainer = document.getElementById('definitionsContainer');
   const button = document.getElementById('definitionButton');
@@ -1036,6 +1040,8 @@ var tagsList = {
   _9F7F: "Card Production Life Cycle (CPLC) Data"
 };
 
+// Function to parse TLV data from a hex string
+// This function assumes the input is a valid hex string representing TLV data
 function parseTLV(hex) {
   let i = 0;
   let table = '<table style="width: 100%; border-collapse: collapse; "  border="1">';
@@ -1050,13 +1056,11 @@ function parseTLV(hex) {
       i += 2;
     }
 
-
     // Lookup tag name and format display
     const tagKey = "_" + tag.toUpperCase();
     const tagName = tagsList[tagKey];
     //const tagDisplay = tagName ? `${tag}<br><small>${tagName}</small>` : tag;	
     const tagDisplay = tagName ? `${tag}<br><small><i>${tagName}</i></small>` : tag;
-
 
     // Parse Length
     let lengthByte = parseInt(hex.substr(i, 2), 16);
@@ -1071,14 +1075,12 @@ function parseTLV(hex) {
       i += numBytes * 2;
     }
 
-
     // Parse Value
     const value = hex.substr(i, length * 2);
     i += length * 2;
 
     table += `<tr><td>${tagDisplay}</td><td>${lengthDisplay}</td><td>${value}</td></tr>`;
   }
-
   table += '</table>';
   return table;
 }
@@ -1093,6 +1095,8 @@ function hexToAscii(hex) {
   return ascii;
 }
 
+// Function to generate ISO 8583 table from JSON data
+// This function generates an HTML table from a JSON object representing ISO 8583 data
 function generateISOTable(json, isRequest) {
   let table = '<table><tr><th class="field-column-fixed">Field</th><th>Value</th></tr>';
 
@@ -1130,10 +1134,6 @@ function generateISOTable(json, isRequest) {
         // Combine raw value and TLV table in one cell
         value = `<div><strong>Raw:</strong> ${String(value)}</div><div style="margin-top:8px; overflow:auto;">${tlvTable}</div>`;
       }
-
-
-
-
       table += `<tr><td>${key}</td><td>${value}</td></tr>`;
     }
   }
@@ -1142,6 +1142,8 @@ function generateISOTable(json, isRequest) {
   return table;
 }
 
+// Function to parse MTI data from input and generate tables
+// This function extracts request and response JSON from the input, parses them, and generates corresponding tables
 function parseMTI() {
   const input = document.getElementById('mti-data-input').value;
 
@@ -1193,8 +1195,40 @@ function parseMTI() {
   tableBoxes.forEach(box => {
     box.style.display = 'block';
   });
-
 }
+
+// Paymark Host Record Parser code
+const recordTagValues = {
+  "A Record": {
+    "defaultAccount": ["10", "20", "30"]
+  },
+  "X Record": {
+    "defaultAccount": ["10", "20", "30"]
+  },
+  "C Record": {
+    "cardSaleEnable": ["true", "false"],
+    "cardCashEnable": ["true", "false"],
+    "cardVoidCashEnable": ["true", "false"],
+    "enabled": ["true", "false"],
+    "emvEnabled": ["true", "false"],
+    "clessEnabled": ["true", "false"],
+    "manualEnabled": ["true", "false"],
+    "swipeEnabled": ["true", "false"],
+    "txnAuthorityRequirement": ["PIN_MANDATORY", "PIN_OR_SIGNATURE", "SIGNATURE_MANDATORY_NO_PIN"],
+    "magstripePinRequired": ["true", "false"],
+    "manualPinRequired": ["true", "false"],
+    "cardPinBypassEnable": ["true", "false"],
+    "cvcPrompt": ["OFF", "MANUAL_ENTRY", "MANUAL_AND_SWIPED", "CARD_NOT_PRESENT", "ECOMMERCE_PHONE_ORDER"],
+    "cvvBypassCheck": ["NO_CHECK", "UNREADABLE_AND_NOT_PRESENT_OPTIONS", "UNREADABLE_AND_NOT_PRESENT_AND_BYPASS_OPTIONS"],
+    "checkSvc": ["true", "false"],
+    "luhnCheckMode": ["OFF", "MANUAL", "MANUAL_SWIPE", "SWIPE", "OFFLINE_ONLY"],
+    "expDateCheckMode": ["OFF", "MANUAL", "MANUAL_SWIPE", "SWIPE", "ALL", "OFFLINE_ONLY"],
+    "accountGroupingCodeOnline": ["1", "2", "3"],
+    "accountGroupingCodeOffline": ["1", "2", "3"],
+    "addressVerification": ["OFF", "ZIP_CODE", "ZIP_CODE_ADDRS", "ADDRS"],
+    "addressVerificationSwipe": ["OFF", "ZIP_CODE", "ZIP_CODE_ADDRS", "ADDRS"]
+  }
+};
 
 // Paymark Host Record Parser code
 function populateDropdownsFromSections() {
@@ -1263,6 +1297,7 @@ function toggleContentById(id) {
   }
 }
 
+//  Function to parse host record from input and display it
 function parseHostRecord() {
   const raw = document.getElementById('inputRecord')?.value;
   const output = document.getElementById('output');
@@ -1382,7 +1417,8 @@ function parseHostRecord() {
   populateDropdownsFromSections();
 }
 
-// record parser
+// Function to load file content into the textarea and parse the host record
+// This function reads the content of a file selected by the user and populates the textarea with
 function loadFileContent(event) {
   const file = event.target.files[0];
   if (!file) return;
