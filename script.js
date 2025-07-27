@@ -607,6 +607,55 @@ function displayDefinitions() {
 }
 
 // CBA MTI Request and Response Parser
+function generateISOTable(json, isRequest) {
+  let table = '<table><tr><th class="field-column-fixed">Field</th><th>Value</th></tr>';
+
+  for (const key in json) {
+    if (json.hasOwnProperty(key)) {
+      let value = json[key];
+
+      // If key is "002", remove the first two digits
+      if (key === "002") {
+        value = String(value);
+        if (value.length >= 2) {
+          value = value.substring(2);
+        }
+      }
+
+      // Only convert to ASCII if it's a request and key is in the list
+      const asciiKeys = ["037", "041", "042", "043", "047"];
+      if (isRequest && asciiKeys.includes(key)) {
+        value = hexToAscii(String(value));
+      }
+
+
+      // If key is DE55, include raw value first, then TLV table
+      if (key === "055") {
+        let rawValue = String(value);
+
+        // Remove first six digits if it's a request message
+        if (isRequest && rawValue.length >= 6) {
+          rawValue = rawValue.substring(6);
+        }
+
+        // Parse TLV
+        const tlvTable = parseTLV(rawValue);
+
+        // Combine raw value and TLV table in one cell
+        value = `<div><strong>Raw:</strong> ${String(value)}</div><div style="margin-top:8px; overflow:auto;">${tlvTable}</div>`;
+      }
+
+
+
+
+      table += `<tr><td>${key}</td><td>${value}</td></tr>`;
+    }
+  }
+
+  table += '</table>';
+  return table;
+}
+
 function parseMTI() {
   const input = document.getElementById('combinedInput').value;
 
