@@ -1,7 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+  
+  // Button EventListener
   const buttons = document.querySelectorAll(".btn");
-
   buttons.forEach(button => {
     button.addEventListener("click", function () {
       const screenId = this.getAttribute("data-screen");
@@ -10,13 +11,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  
+  // Input EventListener
   const input = document.getElementById("json-input");
   if (input) {
     input.addEventListener("input", parseAXL);
+    console.log("Data entered, input:", input); // Add this line
   }
 
-  
+  // Copy Button EventListener
+  const copyButton = document.getElementById("copy-button");
+  if (copyButton) {
+    copyButton.addEventListener("click", copyTable);
+    console.log("Copy Button clicked"); // Add this line
+  }
+
 
 });
 
@@ -39,7 +47,6 @@ function showScreen(screenId) {
       definitionButton.textContent = 'Show Definitions';
     }
   }
-
 
   const input = document.getElementById('json-input');
   if (input) input.value = '';
@@ -112,4 +119,35 @@ function formatTableRows(data, indentLevel = 0) {
     }
   }
   return rows;
+}
+
+function copyTable() {
+  const table = document.querySelector('#json-output table');
+  if (table) {
+    const range = document.createRange();
+    range.selectNode(table);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    //alert('Table copied to clipboard!');
+    showAlert(`Table copied to clipboard!`, "success");
+  } else {
+    //alert('No table to copy');
+    showAlert(`Oops!  No table to copy`, "error");
+  }
+}
+
+// Alert Message function
+function showAlert(message, type = 'info') {
+  const icon = alertIcons[type] || alertIcons.info;
+  const alertText = document.getElementById("alertText");
+  alertText.innerHTML = icon + `<div style="text-align: center;">${message}</div>`;
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById('customAlert').style.display = 'block';
+}
+
+function closeAlert() {
+  document.getElementById('customAlert').style.display = 'none';
+  document.getElementById("overlay").style.display = "none";
 }
