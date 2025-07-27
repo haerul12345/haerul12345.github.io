@@ -65,6 +65,10 @@ function showScreen(screenId) {
     }
   }
 
+  //const de22input = document.getElementById('de22-input');
+  //const de22output = document.getElementById('parse-output');
+  //if (!de22input) de22output.value = '';
+
   const input = document.getElementById('json-input');
   if (input) input.value = '';
 
@@ -218,6 +222,7 @@ function displayParsedData() {
     if (!wasPreviouslyFilled) {
       alert("DE22 data is empty. Please enter the data.");
     }
+    document.getElementById('parse-output').value = ''; 
     return;
   }
   wasPreviouslyFilled = true;
