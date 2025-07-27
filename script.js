@@ -17,7 +17,7 @@ document.querySelectorAll('.screen').forEach(screen => {
   });
   
   // Show the selected screen
-  document.getElementById(id).classList.add('active');
+  document.getElementById(screenId).classList.add('active');
 
   // Hide definitions if visible
   const definitionsContainer = document.getElementById('definitionsContainer');
