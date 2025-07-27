@@ -131,6 +131,17 @@ document.addEventListener('click', function (event) {
   }
 });
 
+// Paste fro
+document.getElementById("pasteButton").addEventListener("click", async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      document.getElementById("json-input").value = text;
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
+    }
+  });
+
+
 // Screen handling
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(screen => {
