@@ -5,10 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
   buttons.forEach(button => {
     button.addEventListener("click", function () {
       const screenId = this.getAttribute("data-screen");
+      console.log("Button clicked, screenId:", screenId); // Add this line
       showScreen(screenId);
     });
   });
 });
+
+
 
 function showScreen(screenId) {
 document.querySelectorAll('.screen').forEach(screen => {
