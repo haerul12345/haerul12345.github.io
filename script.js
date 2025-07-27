@@ -1483,8 +1483,8 @@ function loadFileContent(event) {
 // Funtion for finding a record based on user input
 // This function searches through the records for a match based on user-selected tag and value
 function findRecord() {
+  resetView(); // Reset view before searching
   const inputRecord = document.getElementById('inputRecord')?.value?.trim();
-
   if (!inputRecord) {
     showAlert("Oops! Host Record data is empty", "warning");
     return; // Stop the function if input is empty
