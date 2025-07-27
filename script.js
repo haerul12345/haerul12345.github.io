@@ -201,6 +201,8 @@ function parseAXL() {
        alert("AXL data is empty. Please enter the data.");
     }
     document.getElementById('json-output').value = '';
+    output.style.display = 'none'; // Hide the output container
+    copyButton.style.display = 'none'; // Hide the copy button
     return;
   }
   jsonInputwasPreviouslyFilled = true;
