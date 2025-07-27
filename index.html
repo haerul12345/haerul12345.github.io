@@ -691,10 +691,12 @@
     <div class="flex-container">
       <div class="input-container">
         <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>
-        <button id="pasteButton" style="width: 250px; align-content: left; margin-left: 30px;">📋 Paste from clipboard</button>
+        <div style="display: flex; align-items: left; margin-top: 10px;">
+          <button id="pasteButton" style="width: 250px;">📋 Paste from clipboard</button>
+          <button id="copy-button" style=" margin-left: 20px;"> Copy Table</button>
+        </div>
         <div id="json-output" style="width: 80%;margin-bottom: 80px;align-content: center;"></div>
       </div>
-      <button id="copy-button" style="position: fixed; bottom: 30px; left: 30px;"> Copy Table</button>
     </div>
     <button class="btn back-btn" data-screen="home">Back</button>
   </div>
