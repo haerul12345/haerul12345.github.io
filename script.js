@@ -111,6 +111,12 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Refresh Button clicked"); // Add this line
   }
 
+  // Save Host Record Button EventListener
+  const saveButton = document.getElementById("saveHostRecordButton");
+  if (saveButton) {
+    saveButton.addEventListener("click", validateAndSaveJSON);
+  }
+
 });
 
 // Record Header Click EventListener
@@ -241,33 +247,33 @@ function copyTable() {
 // Alert Icons
 const alertIcons = {
   error: `<div style="font-size: 2.5em; text-align: center;">  
-	<svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-	  <line x1="18" y1="6" x2="6" y2="18" />
-	  <line x1="6" y1="6" x2="18" y2="18" />
-	</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
   </div>`,
 
   success: `<div style="font-size: 2.5em; text-align: center;">
-	  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-	  <polyline points="20 6 9 17 4 12" />
-	  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12" />
+    </svg>
   </div>`,
 
   warning: `<div style="font-size: 2.5em; text-align: center;">  
-		
-	<svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-	  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-	  <line x1="12" y1="9" x2="12" y2="13" />
-	  <line x1="12" y1="17" x2="12.01" y2="17" />
-	</svg>
+    
+  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="orange" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
   </div>`,
 
   info: `<div style="font-size: 2.5em; text-align: center;">
-	<svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<circle cx="12" cy="12" r="10"/>
-		<line x1="12" y1="7" x2="12" y2="13"/>
-		<line x1="12" y1="17" x2="12.01" y2="17"/>
-	</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24" fill="none" stroke="blue" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="7" x2="12" y2="13"/>
+    <line x1="12" y1="17" x2="12.01" y2="17"/>
+  </svg>
   </div>`
 };
 
@@ -1582,4 +1588,74 @@ function resetView() {
       if (valueSpan) valueSpan.style.color = '';
     });
   });
+}
+
+// Funtion to validate JSON input and save it to a file
+// This function checks the input for valid JSON, generates a timestamped filename, and triggers a
+function validateAndSaveJSON() {
+  const raw = document.getElementById('inputRecord')?.value;
+  const output = document.getElementById('output');
+  if (!output) {
+    console.error("Output container not found.");
+    return;
+  }
+
+  // Check for empty input
+  if (!raw || raw.trim() === '') {
+    showAlert('No host record data found', 'warning');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(raw);
+  } catch (e) {
+    //output.innerHTML = '<p style="color:red;">Invalid JSON format.</p>';
+    showAlert('Invalid format', 'error');
+    return;
+  }
+
+  // Generate timestamp: YYYYMMDD_HHMMSS
+  const now = new Date();
+  const timestamp = now.toISOString().replace(/[-:]/g, '').replace('T', '_').split('.')[0];
+
+  // Create file name with timestamp
+  const filename = `host_record_${timestamp}.json`;
+
+  // Trigger download
+  const jsonStr = JSON.stringify(data, null, 4); // Beautify with 4-space indentation
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  showAlert(`Host record has been saved to file: <strong>${filename}</strong><br>It will be downloaded automatically.`, "success");
+
+  const allSections = document.querySelectorAll('.section');
+  const allRecords = document.querySelectorAll('.record');
+
+  // Reset section headers and collapse content
+  allSections.forEach(section => {
+    const sectionHeader = section.querySelector('.section-header');
+    const sectionContent = section.querySelector('.section-content');
+    if (sectionHeader) sectionHeader.style.color = '';
+    if (sectionContent) sectionContent.style.display = 'none';
+  });
+
+  // Reset record headers and field highlights
+  allRecords.forEach(record => {
+    const header = record.querySelector('.record-header');
+    const fields = record.querySelectorAll('.record-field');
+    if (header) header.style.color = '';
+    fields.forEach(field => {
+      const valueSpan = field.querySelector('.value');
+      if (valueSpan) valueSpan.style.color = '';
+    });
+  });
+
 }
