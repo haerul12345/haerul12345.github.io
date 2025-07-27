@@ -90,11 +90,11 @@ function showScreen(screenId) {
 
   // Hide definitions if visible
   const definitionsContainer = document.getElementById('definitionsContainer');
-  const definitionButton = document.getElementById('definitionButton');
+  const definitions = document.getElementById('definitionButton');
   if (definitionsContainer) {
     definitionsContainer.remove();
-    if (definitionButton) {
-      definitionButton.textContent = 'Show Definitions';
+    if (definitions) {
+      definitions.textContent = 'Show Definitions';
     }
   }
 
