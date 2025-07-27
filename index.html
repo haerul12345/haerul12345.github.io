@@ -128,6 +128,13 @@
       color: #999;
     }
 
+    ft {
+      color: white;
+      margin: 0 0 20px 0;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
     .buttons {
       margin-top: 30px;
       display: flex;
@@ -628,7 +635,13 @@
       height: auto;
     }
 
-
+    footer {
+      color: #666;
+      text-align: center;      
+      border-top: 1px solid#ddd;
+      padding-top: 1rem;
+      margin-top: 3rem;
+    }
 
     @keyframes fadeIn {
       from {
@@ -666,9 +679,9 @@
       </div>
     </div>
     <footer>
-      <p>© 2025 hji</p>
+      <ft>© 2025 hji</ft>
     </footer>
-    
+
     <footer id="app-version" style="text-align: center; padding: 10px; font-size: 0.9em; color: #666;">
 
     </footer>
@@ -677,10 +690,10 @@
 
   <!-- AXL Parser Section -->
   <div id="axl-parser" class="screen">
-    <h1>AXL Response Parser</h1>    
+    <h1>AXL Response Parser</h1>
     <div class="flex-container">
       <div class="input-container">
-        <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>       
+        <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>
       </div>
       <div id="ParsedTable" class="output-container">
         <div id="json-output"></div>
@@ -692,14 +705,15 @@
 
   <!-- DE22 EFTEXT Parser Section -->
   <div id="de22-eftex-parser" class="screen">
-    <h1>POS Data Code (DE22) Parser for EFTEX</h1>    
+    <h1>POS Data Code (DE22) Parser for EFTEX</h1>
     <div class="input-container">
       <div class="de22-input-container">
         <label for="de22-input">DE22 Data:</label>
         <input type="text" id="de22-input" placeholder="A1010151334C101" ">
-        <button id="definitionButton" style="position: fixed; bottom: 30px; left: 30px;">Show Definitions</button>
+        <button id=" definitionButton" style="position: fixed; bottom: 30px; left: 30px;">Show Definitions</button>
       </div>
-      <textarea id="parse-output" placeholder="Parsed CAD data will appear here..." style="white-space: pre-wrap;"> </textarea>
+      <textarea id="parse-output" placeholder="Parsed CAD data will appear here..."
+        style="white-space: pre-wrap;"> </textarea>
     </div>
     <div id="DefinitionsOutput"></div>
     <button class="btn back-btn" data-screen="home">Back</button>
@@ -812,7 +826,7 @@
   </div>
   <script type="module" src="script.js"></script>
 
-  
+
 
 </body>
 
