@@ -100,8 +100,15 @@ document.addEventListener("DOMContentLoaded", function () {
   // Find Record Button EventListener
   const findButton = document.getElementById("findButton");
   if (findButton) {
-    copyBufindButtontton.addEventListener("click", findRecord);
+    findButton.addEventListener("click", findRecord);
     console.log("Copy Button clicked"); // Add this line
+  }
+
+  // Refresh Button EventListener
+  const refreshButton = document.getElementById("refreshButton");
+  if (refreshButton) {
+    refreshButton.addEventListener("click", resetView);
+    console.log("Refresh Button clicked"); // Add this line
   }
 
 });
@@ -1467,50 +1474,42 @@ function loadFileContent(event) {
   reader.readAsText(file);
 }
 
+// Funtion for finding a record based on user input
+// This function searches through the records for a match based on user-selected tag and value
 function findRecord() {
-
-	
-const inputRecord = document.getElementById('inputRecord')?.value?.trim();
+  const inputRecord = document.getElementById('inputRecord')?.value?.trim();
 
   if (!inputRecord) {
     showAlert("Oops! Host Record data is empty", "warning");
     return; // Stop the function if input is empty
   }
 
-
   const tagSelect = document.getElementById('tagSelect')?.value;
-  const valueSelect = document.getElementById('valueSelect')?.value;  
-
+  const valueSelect = document.getElementById('valueSelect')?.value;
   const recordSelect = document.getElementById('recordSelect')?.value + ' Record'; // The selected section-header
-
   const allRecords = document.querySelectorAll('.record');
-  
   const allSectionHeaders = document.querySelectorAll('.section-header');
 
-  
-	let anyMatchFound = false; // Track if any match is found
-	let matchCount = 0; // 🔢 Counter for matches
-	
-// Reset all section header colors
+
+  let anyMatchFound = false; // Track if any match is found
+  let matchCount = 0; // 🔢 Counter for matches
+
+  // Reset all section header colors
   allSectionHeaders.forEach(header => {
     header.style.color = '';
   });
 
-	
   allRecords.forEach(record => {
-	const recordSection = record.getAttribute('data-section');
+    const recordSection = record.getAttribute('data-section');
     const header = record.querySelector('.record-header');
     const fields = record.querySelectorAll('.record-field');
     let matchFound = false;
 
-
     // Reset header color first
     if (header) header.style.color = '';
-	const section = record.closest('.section');	
-	const sectionHeader = section?.querySelector('.section-header');
-	
+    const section = record.closest('.section');
+    const sectionHeader = section?.querySelector('.section-header');
     const sectionContent = section?.querySelector('.section-content');
-
 
     fields.forEach(field => {
       const keySpan = field.querySelector('.key');
@@ -1518,52 +1517,69 @@ const inputRecord = document.getElementById('inputRecord')?.value?.trim();
       if (!keySpan || !valueSpan) return;
 
       const key = keySpan.textContent.replace(':', '').trim();
-
-	   const value = valueSpan.textContent.trim();
+      const value = valueSpan.textContent.trim();
 
       // Reset previous highlight
       valueSpan.style.color = '';
 
       // Highlight if key matches tagSelect
-	  if (key === tagSelect && value === valueSelect) {       
-					
-			if (recordSection === recordSelect)	{
-				valueSpan.style.color = 'red';
-				matchFound = true;
-				anyMatchFound = true;
-				matchCount++; // ✅ Increment match count
-				//alert(`Match found!\nKey: ${tagSelect} ${key}\nValue: ${valueSelect} ${value}  \nRecord: ${recordSelect} ${recordSection} `);
-			}
-	  }
+      if (key === tagSelect && value === valueSelect) {
+
+        if (recordSection === recordSelect) {
+          valueSpan.style.color = 'red';
+          matchFound = true;
+          anyMatchFound = true;
+          matchCount++; // ✅ Increment match count
+        }
+      }
     });
 
     // Highlight header if any match found
     if (matchFound && header) {
       if (header) header.style.color = 'red';
-	  
-	  if (sectionHeader && recordSection === recordSelect) {
+
+      if (sectionHeader && recordSection === recordSelect) {
         sectionHeader.style.color = 'red';
       }
-		
-	 if (sectionContent && recordSection === recordSelect) {
+
+      if (sectionContent && recordSection === recordSelect) {
         sectionContent.style.display = 'block'; // Auto-expand the section
       }
-
-	  //valueSpan.style.color = 'red';
     }
   });
-  
-  
+
   // Show alert if no match was found
   if (!anyMatchFound) {
     //alert(`No matching record found for: Tag:${tagSelect} Value:${valueSelect} in ${recordSelect}`);
-	//showAlert(`No matching record found for: Tag:${tagSelect} Value:${valueSelect} in ${recordSelect}`);
-	
-	showAlert(`Oops!  We couldn't find ${tagSelect}:${valueSelect} in ${recordSelect}`,"warning");
-
+    //showAlert(`No matching record found for: Tag:${tagSelect} Value:${valueSelect} in ${recordSelect}`);
+    showAlert(`Oops!  We couldn't find ${tagSelect}:${valueSelect} in ${recordSelect}`, "warning");
   }
-	else {
+  else {
     showAlert(`Found ${matchCount} matching record(s) for ${tagSelect}:${valueSelect} in ${recordSelect}`, "success");
   }
+}
 
-}	
+// Function to show alert messages
+function resetView() {
+  const allSections = document.querySelectorAll('.section');
+  const allRecords = document.querySelectorAll('.record');
+
+  // Reset section headers and collapse content
+  allSections.forEach(section => {
+    const sectionHeader = section.querySelector('.section-header');
+    const sectionContent = section.querySelector('.section-content');
+    if (sectionHeader) sectionHeader.style.color = '';
+    if (sectionContent) sectionContent.style.display = 'none';
+  });
+
+  // Reset record headers and field highlights
+  allRecords.forEach(record => {
+    const header = record.querySelector('.record-header');
+    const fields = record.querySelectorAll('.record-field');
+    if (header) header.style.color = '';
+    fields.forEach(field => {
+      const valueSpan = field.querySelector('.value');
+      if (valueSpan) valueSpan.style.color = '';
+    });
+  });
+}
