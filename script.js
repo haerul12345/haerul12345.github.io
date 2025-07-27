@@ -54,6 +54,27 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Data entered, input:", mtiInput); // Add this line
   }
 
+  // Tab EventListener
+
+  const tabs = document.querySelectorAll(".tabs .tab");
+  const contents = document.querySelectorAll(".tab-content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      // Remove active class from all tabs
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      // Hide all tab contents
+      contents.forEach(content => content.style.display = "none");
+
+      // Show the selected tab content
+      const selectedTab = tab.getAttribute("data-tab");
+      document.getElementById(selectedTab).style.display = "block";
+    });
+  });
+
+
 });
 
 // Screen handling
@@ -657,7 +678,7 @@ function generateISOTable(json, isRequest) {
 }
 
 function parseMTI() {
-  const input = document.getElementById('combinedInput').value;
+  const input = document.getElementById('mti-data-input').value;
 
   const requestMatch = input.match(/Request\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
   const responseMatch = input.match(/Response\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
