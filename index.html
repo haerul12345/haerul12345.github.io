@@ -651,20 +651,11 @@
 
   <!-- Home Screen -->
   <div id="home" class="screen active">
-
     <div class="card">
-
-      <!--  <h1>Welcome to ParserSweet</h1>
-	  <div id="parserlogo"></div> -->
-
-
       <div class="header-container">
         <h1>Welcome to ParserSweet</h1>
         <div id="parserlogo"> </div>
       </div>
-
-
-
       <q>Parsing made sweet and simple. </q>
       <p>Your data has stories to tell — let ParserSweet help you read them. </p>
       <div class="buttons">
@@ -676,14 +667,12 @@
     </div>
   </div>
 
-  <!-- Gallery Section -->
+  <!-- AXL Parser Section -->
   <div id="axl-parser" class="screen">
-    <h1>AXL Response Parser</h1>
-    <!-- <p>A vibrant collection of artwork, photography, and visual experiments.</p> -->
+    <h1>AXL Response Parser</h1>    
     <div class="flex-container">
       <div class="input-container">
-        <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>
-        <!-- <button onclick="parseAXL()">Parse JSON</button> -->
+        <textarea id="json-input" placeholder="Paste your JSON data here..."></textarea>       
       </div>
       <div id="ParsedTable" class="output-container">
         <div id="json-output"></div>
@@ -693,23 +682,18 @@
     <button class="btn back-btn" data-screen="home">Back</button>
   </div>
 
-  <!-- Projects Section -->
+  <!-- DE22 EFTEXT Parser Section -->
   <div id="de22-eftex-parser" class="screen">
-    <h1>POS Data Code (DE22) Parser for EFTEX</h1>
-    <!-- <p>Explore innovative works, design experiments, and collaborative creations.</p> -->
+    <h1>POS Data Code (DE22) Parser for EFTEX</h1>    
     <div class="input-container">
       <div class="de22-input-container">
         <label for="de22-input">DE22 Data:</label>
-        <input type="text" id="de22-input" placeholder="A1010151334C101" oninput="displayParsedData()">
-        <!-- <button onclick="displayParsedData()">Parse</button> -->
-
+        <input type="text" id="de22-input" placeholder="A1010151334C101" ">
         <button id="definitionButton" onclick="displayDefinitions()" style="position: fixed; bottom: 30px; left: 30px;">
           Show Definitions
         </button>
-
       </div>
-      <textarea id="parse-output" placeholder="Parsed CAD data will appear here..."
-        style="white-space: pre-wrap;"> </textarea>
+      <textarea id="parse-output" placeholder="Parsed CAD data will appear here..." style="white-space: pre-wrap;"> </textarea>
     </div>
     <div id="DefinitionsOutput"></div>
     <button class="btn back-btn" data-screen="home">Back</button>
