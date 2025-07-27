@@ -1,6 +1,10 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+  // Application version
+  const appVersion = "3.0";
+  document.getElementById("app-version").textContent = `ParserSweet Version: ${appVersion}`;
+  
   // Button EventListener
   const buttons = document.querySelectorAll(".btn");
   buttons.forEach(button => {
