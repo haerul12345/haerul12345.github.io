@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // DE22 Input EventListener
   const de22Input = document.getElementById('de22-input');
   if (de22Input) {
-    de22Input.addEventListener('input', displayParsedData);
+    de22Input.value = de22Input.value.toUpperCase();
+    de22Input.addEventListener('input', displayParsedData);    
   }
 
   // Button Display Definition EventListener
