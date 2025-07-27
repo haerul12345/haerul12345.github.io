@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
     de22Input.addEventListener('input', displayParsedData);
   }
 
+  // Button Display Definition EventListener
+  const definitionButton = document.getElementById("definitionButton");
+  if (definitionButton) {
+    definitionButton.addEventListener("click", displayDefinitions);
+  }
+
 });
 
 // Screen handling
@@ -203,13 +209,18 @@ function resizeparsedDataOutput() {
   parsedDataOutput.style.height = parsedDataOutput.scrollHeight + 'px';
 }
 
+let wasPreviouslyFilled = false;
+
 function displayParsedData() {
   const cardData = document.getElementById('de22-input').value;
 
-  if (!cardData.trim()) {
-    alert("DE22 data is empty. Please enter the data.");
+  if (!cardData) {
+    if (!wasPreviouslyFilled) {
+      alert("DE22 data is empty. Please enter the data.");
+    }
     return;
   }
+  wasPreviouslyFilled = true;
 
   const parsedData = parseCardData(cardData);
   let output = '';
