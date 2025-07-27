@@ -377,7 +377,7 @@
 
 
     .field-column-fixed {
-      width: 60px;
+      width: 65px;
     }
 
     .tag-column-fixed {
@@ -746,19 +746,13 @@
 
     <div style="display: flex; gap: 20px; align-items: flex-start;">
       <div style="flex: 1;">
-        <textarea id="inputRecord" placeholder='Paste your host record here' onchange="parseHostRecord()"
-          oninput="parseHostRecord()"></textarea>
+        <textarea id="inputRecord" placeholder='Paste your host record here'></textarea>
         <br />
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-          <!-- <div>
-	<button onclick="parseData()">&lt;&gt; Parse</button>
-	</div> -->
           <div>
             <label for="recordSelect">Records:</label>
             <select id="recordSelect" style="width: 150px;">
-              <!-- <option value="A">A Record</option>
-	<option value="X">X Record</option>
-	<option value="C">C Record</option> -->
+              <!-- empty option first -->
             </select>
             <label for="tagSelect">Tags:</label>
             <select id="tagSelect" style="width: 150px;">&gt;
@@ -783,24 +777,15 @@
         </div>
         <br />
         <div id="output" style="margin-top: 20px;"></div>
-        <!-- <div id="recordContainer"></div> -->
       </div>
     </div>
-
-
-
     <button class="btn back-btn" data-screen="home">Back</button>
   </div>
-
   <div id="overlay"></div>
   <div id="customAlert">
     <div id="alertText"></div>
     <button id="alert-ok-button">OK</button>
   </div>
   <script type="module" src="script.js"></script>
-
-
-
 </body>
-
 </html>
