@@ -628,6 +628,63 @@ function displayDefinitions() {
 }
 
 // CBA MTI Request and Response Parser
+// Helper function to convert hex string to ASCII
+function hexToAscii(hex) {
+  let ascii = '';
+  for (let i = 0; i < hex.length; i += 2) {
+    const part = hex.substr(i, 2);
+    ascii += String.fromCharCode(parseInt(part, 16));
+  }
+  return ascii;
+}
+
+function parseTLV(hex) {
+  let i = 0;
+  let table = '<table style="width: 100%; border-collapse: collapse; "  border="1">';
+  table += '<tr><th class="tag-column-fixed">Tag</th><th class="field-column-fixed">Length (Byte) </th><th>Value</th></tr>';
+
+  while (i < hex.length) {
+    // Parse Tag
+    let tag = hex.substr(i, 2);
+    i += 2;
+    if ((parseInt(tag, 16) & 0x1F) === 0x1F) {
+      tag += hex.substr(i, 2);
+      i += 2;
+    }
+
+
+    // Lookup tag name and format display
+    const tagKey = "_" + tag.toUpperCase();
+    const tagName = tagsList[tagKey];
+    //const tagDisplay = tagName ? `${tag}<br><small>${tagName}</small>` : tag;	
+    const tagDisplay = tagName ? `${tag}<br><small><i>${tagName}</i></small>` : tag;
+
+
+    // Parse Length
+    let lengthByte = parseInt(hex.substr(i, 2), 16);
+    let lengthDisplay = hex.substr(i, 2); // Keep original hex string for display
+    i += 2;
+
+    let length = lengthByte;
+    if (lengthByte & 0x80) {
+      const numBytes = lengthByte & 0x7F;
+      length = parseInt(hex.substr(i, numBytes * 2), 16);
+      lengthDisplay = hex.substr(i, numBytes * 2); // Update display value
+      i += numBytes * 2;
+    }
+
+
+    // Parse Value
+    const value = hex.substr(i, length * 2);
+    i += length * 2;
+
+    table += `<tr><td>${tagDisplay}</td><td>${lengthDisplay}</td><td>${value}</td></tr>`;
+  }
+
+  table += '</table>';
+  return table;
+}
+
 function generateISOTable(json, isRequest) {
   let table = '<table><tr><th class="field-column-fixed">Field</th><th>Value</th></tr>';
 
