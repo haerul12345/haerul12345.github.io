@@ -143,7 +143,7 @@ function showScreen(screenId) {
 
   // Hide definitions if visible
   const definitionsContainer = document.getElementById('definitionsContainer');
-  const definitions = document.getElementById('definitionButton');
+  const definitions = document.getElementById('defButton');
   if (definitionsContainer) {
     definitionsContainer.remove();
     if (definitions) {
@@ -628,7 +628,7 @@ const posDataDefinitions = {
 // Function to display definitions in a modal-like container
 function displayDefinitions() {
   const existingContainer = document.getElementById('definitionsContainer');
-  const button = document.getElementById('definitionButton');
+  const button = document.getElementById('defButton');
 
   if (existingContainer) {
     existingContainer.remove();
