@@ -82,6 +82,28 @@ document.addEventListener("DOMContentLoaded", function () {
     inputRecord.addEventListener("change", parseHostRecord);
   }
 
+  // File Input Host Data EventListener
+  const fileInput = document.getElementById("fileInput");
+  const openButton = document.getElementById("openFileButton");
+  if (fileInput && openButton) {
+    // Trigger file input when button is clicked
+    openButton.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    // Handle file selection
+    fileInput.addEventListener("change", (event) => {
+      loadFileContent(event);
+    });
+  }
+
+  // Find Record Button EventListener
+  const findButton = document.getElementById("findButton");
+  if (findButton) {
+    copyBufindButtontton.addEventListener("click", findRecord);
+    console.log("Copy Button clicked"); // Add this line
+  }
+
 });
 
 // Record Header Click EventListener
@@ -1445,3 +1467,103 @@ function loadFileContent(event) {
   reader.readAsText(file);
 }
 
+function findRecord() {
+
+	
+const inputRecord = document.getElementById('inputRecord')?.value?.trim();
+
+  if (!inputRecord) {
+    showAlert("Oops! Host Record data is empty", "warning");
+    return; // Stop the function if input is empty
+  }
+
+
+  const tagSelect = document.getElementById('tagSelect')?.value;
+  const valueSelect = document.getElementById('valueSelect')?.value;  
+
+  const recordSelect = document.getElementById('recordSelect')?.value + ' Record'; // The selected section-header
+
+  const allRecords = document.querySelectorAll('.record');
+  
+  const allSectionHeaders = document.querySelectorAll('.section-header');
+
+  
+	let anyMatchFound = false; // Track if any match is found
+	let matchCount = 0; // 🔢 Counter for matches
+	
+// Reset all section header colors
+  allSectionHeaders.forEach(header => {
+    header.style.color = '';
+  });
+
+	
+  allRecords.forEach(record => {
+	const recordSection = record.getAttribute('data-section');
+    const header = record.querySelector('.record-header');
+    const fields = record.querySelectorAll('.record-field');
+    let matchFound = false;
+
+
+    // Reset header color first
+    if (header) header.style.color = '';
+	const section = record.closest('.section');	
+	const sectionHeader = section?.querySelector('.section-header');
+	
+    const sectionContent = section?.querySelector('.section-content');
+
+
+    fields.forEach(field => {
+      const keySpan = field.querySelector('.key');
+      const valueSpan = field.querySelector('.value');
+      if (!keySpan || !valueSpan) return;
+
+      const key = keySpan.textContent.replace(':', '').trim();
+
+	   const value = valueSpan.textContent.trim();
+
+      // Reset previous highlight
+      valueSpan.style.color = '';
+
+      // Highlight if key matches tagSelect
+	  if (key === tagSelect && value === valueSelect) {       
+					
+			if (recordSection === recordSelect)	{
+				valueSpan.style.color = 'red';
+				matchFound = true;
+				anyMatchFound = true;
+				matchCount++; // ✅ Increment match count
+				//alert(`Match found!\nKey: ${tagSelect} ${key}\nValue: ${valueSelect} ${value}  \nRecord: ${recordSelect} ${recordSection} `);
+			}
+	  }
+    });
+
+    // Highlight header if any match found
+    if (matchFound && header) {
+      if (header) header.style.color = 'red';
+	  
+	  if (sectionHeader && recordSection === recordSelect) {
+        sectionHeader.style.color = 'red';
+      }
+		
+	 if (sectionContent && recordSection === recordSelect) {
+        sectionContent.style.display = 'block'; // Auto-expand the section
+      }
+
+	  //valueSpan.style.color = 'red';
+    }
+  });
+  
+  
+  // Show alert if no match was found
+  if (!anyMatchFound) {
+    //alert(`No matching record found for: Tag:${tagSelect} Value:${valueSelect} in ${recordSelect}`);
+	//showAlert(`No matching record found for: Tag:${tagSelect} Value:${valueSelect} in ${recordSelect}`);
+	
+	showAlert(`Oops!  We couldn't find ${tagSelect}:${valueSelect} in ${recordSelect}`,"warning");
+
+  }
+	else {
+    showAlert(`Found ${matchCount} matching record(s) for ${tagSelect}:${valueSelect} in ${recordSelect}`, "success");
+  }
+
+}	

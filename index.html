@@ -707,7 +707,7 @@
       <div class="de22-input-container">
         <label for="de22-input">DE22 Data:</label>
         <input type="text" id="de22-input" placeholder="A1010151334C101" ">
-        <button id="definitionButton" style="position: fixed; bottom: 30px; left: 30px;">Show Definitions</button>
+        <button id=" definitionButton" style="position: fixed; bottom: 30px; left: 30px;">Show Definitions</button>
       </div>
       <textarea id="parse-output" placeholder="Parsed CAD data will appear here..."
         style="white-space: pre-wrap;"> </textarea>
@@ -762,15 +762,13 @@
             <select id="valueSelect" style="width: 150px;margin-right: 50px; ">
             </select>
 
-            <button onclick="findRecord()">🔍 Find</button>
+            <button id="findButton">🔍 Find</button>
             <button id="refreshButton" title="Refresh">
               🔄 Refresh
             </button>
 
-            <input type="file" id="fileInput" accept=".txt,.json" style="display:none"
-              onchange="loadFileContent(event)">
-            <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
-
+            <input type="file" id="fileInput" accept=".txt,.json" style="display:none">
+            <button id="openFileButton">📂 Open</button>
 
             <button onclick="validateAndSaveJSON()">💾 Save</button>
           </div>
@@ -788,4 +786,5 @@
   </div>
   <script type="module" src="script.js"></script>
 </body>
+
 </html>
