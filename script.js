@@ -42,10 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Button Display Definition EventListener
-  const defButton = document.getElementById("definitionButton");
-  if (defButton) {
-    defButton.addEventListener("click", displayDefinitions);
-    console.log("Definition Button clicked"); // Add this line
+  const defineButton = document.getElementById("defButton");
+  if (defineButton) {
+    defineButton.addEventListener("click", displayDefinitions);
+    defineButton.log("Definition Button clicked"); // Add this line
   }
 
   // MTI Input EventListener
