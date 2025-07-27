@@ -197,6 +197,12 @@ function closeAlert() {
 }
 
 // DE22 Parser code
+function resizeparsedDataOutput() {
+  const parsedDataOutput = document.getElementById('parse-output');
+  parsedDataOutput.style.height = 'auto';
+  parsedDataOutput.style.height = parsedDataOutput.scrollHeight + 'px';
+}
+
 function displayParsedData() {
   const cardData = document.getElementById('de22-input').value;
 
@@ -374,8 +380,201 @@ function parseCardData(cardData) {
   return parsedData;
 }
 
-function resizeparsedDataOutput() {
-  const parsedDataOutput = document.getElementById('parse-output');
-  parsedDataOutput.style.height = 'auto';
-  parsedDataOutput.style.height = parsedDataOutput.scrollHeight + 'px';
+const posDataDefinitions = {
+  '(Pos 1) The card data input capability  of the terminal': {
+    '0': 'Unknown',
+    '1': 'Manual, no terminal',
+    '2': 'Magnetic stripe read',
+    '3': 'Bar code',
+    '4': 'OCR',
+    '5': 'Integrate circuit card (ICC)',
+    '6': 'Key entered',
+    'A': 'Contactless ICC',
+    'B': 'Contactless magnetic stripe'
+  },
+  '(Pos 2) The cardholder authentication capability of the terminal': {
+    '0': 'No electronic authentication',
+    '1': 'PIN',
+    '2': 'Electronic signature analysis',
+    '3': 'Biometrics',
+    '4': 'Biographic',
+    '5': 'Electronic authentication inoperative',
+    '6': 'Other'
+  },
+  '(Pos 3) The card capture capability of the terminal': {
+    '0': 'None',
+    '1': 'Capture'
+  },
+  '(Pos 4) The operating environment of the terminal': {
+    '0': 'No terminal used',
+    '1': 'On premises of card acceptor, attended',
+    '2': 'On premises of card acceptor, unattended',
+    '3': 'Off premises of card acceptor, attended',
+    '4': 'Off premises of card acceptor, unattended',
+    '5': 'On premises of cardholder, attended'
+  },
+  '(Pos 5) Indicates whether the cardholder is present': {
+    '0': 'Cardholder present',
+    '1': 'Cardholder not present, unspecified',
+    '2': 'Cardholder not present, mail order',
+    '3': 'Cardholder not present, telephone',
+    '4': 'Cardholder not present, standing authorisation'
+  },
+  '(Pos 6) Indicates whether the card is present': {
+    '0': 'Card not present',
+    '1': 'Card present'
+  },
+  '(Pos 7) The actual card data input mode of the transaction': {
+    '0': 'Unspecified',
+    '1': 'Manual, no terminal',
+    '2': 'Magnetic stripe read',
+    '3': 'Bar code',
+    '4': 'OCR',
+    '5': 'Integrate circuit card (ICC)',
+    '6': 'Key entered',
+    '7': 'Contactless ICC',
+    '8': 'Contactless magnetic stripe'
+  },
+  '(Pos 8) The actual cardholder authentication method of the transaction': {
+    '0': 'Not authenticated',
+    '1': 'PIN',
+    '2': 'Electronic signature analysis',
+    '3': 'Biometrics',
+    '4': 'Biographic',
+    '5': 'Manual signature verification',
+    '6': 'Other manual verification'
+  },
+  '(Pos 9) The cardholder authentication entity of the transaction': {
+    '0': 'Not authenticated',
+    '1': 'Integrated circuit card',
+    '2': 'Terminal',
+    '3': 'Authorising agent',
+    '4': 'Merchant',
+    '5': 'Other'
+  },
+  '(Pos 10) The card data output capability of the terminal': {
+    '0': 'Unknown',
+    '1': 'None',
+    '2': 'Magnetic stripe write',
+    '3': 'Integrate circuit card (ICC)'
+  },
+  '(Pos 11) The terminal output capability of the terminal': {
+    '0': 'Unknown',
+    '1': 'None',
+    '2': 'Printing',
+    '3': 'Display',
+    '4': 'Printing and display'
+  },
+  '(Pos 12) The PIN capture capability of the terminal': {
+    '0': 'No PIN capture capability',
+    '1': 'Device PIN capture capability unknown',
+    '4': 'Four characters',
+    '5': 'Five characters',
+    '6': 'Six characters',
+    '7': 'Seven characters',
+    '8': 'Eight characters',
+    '9': 'Nine characters',
+    'A': 'Ten characters',
+    'B': 'Eleven characters',
+    'C': 'Twelve characters'
+  },
+  '(Pos 13) Terminal operator': {
+    '0': 'Customer operated',
+    '1': 'Card acceptor operated',
+    '2': 'Administrative'
+  },
+  '(Pos 14-15) Terminal type': {
+    '00': 'Administrative terminal',
+    '01': 'POS terminal',
+    '02': 'ATM',
+    '03': 'Home terminal',
+    '04': 'Electronic cash register (ECR)',
+    '05': 'Dial terminal',
+    '06': 'Travellers check machine',
+    '07': 'Fuel machine',
+    '08': 'Scrip machine',
+    '09': 'Coupon machine',
+    '10': 'Ticket machine',
+    '11': 'Point-of-Banking terminal',
+    '12': 'Teller',
+    '13': 'Franchise teller',
+    '14': 'Personal banking',
+    '15': 'Public utility',
+    '16': 'Vending',
+    '17': 'Self-service',
+    '18': 'Authorization',
+    '19': 'Payment',
+    '20': 'VRU',
+    '21': 'Smart phone',
+    '22': 'Interactive television',
+    '23': 'Personal digital assistant',
+    '24': 'Screen phone',
+    '90': 'E-commerce - No encryption; no authentication',
+    '91': 'E-commerce - SET/3D-Secure encryption; cardholder certificate not used (non-authenticated)',
+    '92': 'E-commerce - SET/3D-Secure encryption; cardholder certificate used (authenticated)',
+    '93': 'E-commerce - SET encryption, chip cryptogram used; cardholder certificate not used',
+    '94': 'E-commerce - SET encryption, chip cryptogram used; cardholder certificate used',
+    '95': 'Channel encryption (SSL); cardholder certificate not used (non-authenticated)',
+    '96': 'E-commerce - Channel encryption (SSL); chip cryptogram used, cardholder certificate not used'
+  }
+};
+
+function displayDefinitions() {
+  const existingContainer = document.getElementById('definitionsContainer');
+  const button = document.getElementById('definitionButton');
+
+  if (existingContainer) {
+    existingContainer.remove();
+    button.textContent = 'Show Definitions';
+  } else {
+    const container = document.createElement('div');
+    container.id = 'definitionsContainer';
+    container.style.position = 'absolute';
+    container.style.bottom = '80px';
+    container.style.left = '30px';
+    container.style.right = '30px';
+    container.style.height = '40%';
+    container.style.height = container.scrollHeight + '40%';
+    container.style.overflowY = 'auto';
+    container.style.backgroundColor = '#f9f9f9';
+    container.style.border = '1px solid #ccc';
+    container.style.padding = '15px';
+    container.style.width = 'auto'; // Wider to accommodate 3 columns
+    container.style.zIndex = '1000';
+    container.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+    container.style.fontFamily = 'monospace';
+    container.style.fontSize = '10px';
+    container.style.display = 'flex';
+    container.style.flexWrap = 'wrap';
+    container.style.gap = '15px';
+    container.style.borderRadius = '5px';
+
+
+    for (const [title, definitions] of Object.entries(posDataDefinitions)) {
+      const section = document.createElement('div');
+      section.style.flex = '1 1 calc(33.333% - 10px)';
+      section.style.boxSizing = 'border-box';
+      section.style.marginBottom = '10px';
+
+      const heading = document.createElement('strong');
+      heading.textContent = title;
+      section.appendChild(heading);
+
+      const list = document.createElement('ul');
+      list.style.margin = '5px 0 0 15px';
+      list.style.padding = '0';
+
+      for (const [code, meaning] of Object.entries(definitions)) {
+        const item = document.createElement('li');
+        item.textContent = `${code}: ${meaning}`;
+        list.appendChild(item);
+      }
+
+      section.appendChild(list);
+      container.appendChild(section);
+    }
+
+    document.body.appendChild(container);
+    button.textContent = 'Hide Definitions';
+  }
 }
