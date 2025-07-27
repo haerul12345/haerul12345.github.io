@@ -187,11 +187,24 @@ function showScreen(screenId) {
 
 }
 
+// Variable to track if DE22 input was previously filled
+let jsonInputwasPreviouslyFilled = false;
+
 // AXL Parser code
 function parseAXL() {
   const input = document.getElementById('json-input').value;
   const output = document.getElementById('json-output');
   const copyButton = document.getElementById('copy-button');
+
+  if(!input){
+    if (!jsonInputwasPreviouslyFilled) {
+       alert("AXL data is empty. Please enter the data.");
+    }
+    document.getElementById('json-output').value = '';
+    return;
+  }
+  jsonInputwasPreviouslyFilled = true;
+
   try {
     const jsonData = JSON.parse(input);
     if (jsonData.event && jsonData.event.resource) {
@@ -1507,7 +1520,6 @@ function findRecord() {
   const recordSelect = document.getElementById('recordSelect')?.value + ' Record'; // The selected section-header
   const allRecords = document.querySelectorAll('.record');
   const allSectionHeaders = document.querySelectorAll('.section-header');
-
 
   let anyMatchFound = false; // Track if any match is found
   let matchCount = 0; // 🔢 Counter for matches
