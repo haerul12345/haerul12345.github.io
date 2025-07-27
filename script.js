@@ -136,6 +136,7 @@ document.getElementById("pasteButton").addEventListener("click", async () => {
     try {
       const text = await navigator.clipboard.readText();
       document.getElementById("json-input").value = text;
+      parseAXL(); // Automatically parse the pasted JSON
     } catch (err) {
       console.error("Failed to read clipboard contents: ", err);
     }
