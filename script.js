@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (de22Input) {
     de22Input.addEventListener('input', displayParsedData);
   }
-  
+
 });
 
 // Screen handling
@@ -372,4 +372,10 @@ function parseCardData(cardData) {
   };
 
   return parsedData;
+}
+
+function resizeparsedDataOutput() {
+  const parsedDataOutput = document.getElementById('parse-output');
+  parsedDataOutput.style.height = 'auto';
+  parsedDataOutput.style.height = parsedDataOutput.scrollHeight + 'px';
 }
