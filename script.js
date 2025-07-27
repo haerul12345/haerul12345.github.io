@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Button Display Definition EventListener
-  const definitionButton = document.getElementById("definitionButton");
-  if (definitionButton) {
-    definitionButton.addEventListener("click", displayDefinitions);
+  const defButton = document.getElementById("definitionButton");
+  if (defButton) {
+    defButton.addEventListener("click", displayDefinitions);
     console.log("Definition Button clicked"); // Add this line
   }
 
