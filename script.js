@@ -9,6 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
       showScreen(screenId);
     });
   });
+
+  
+  const input = document.getElementById("json-input");
+  if (input) {
+    input.addEventListener("input", parseAXL);
+  }
+
+  
+
 });
 
 // Screen handling
