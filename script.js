@@ -26,10 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // OK Button on Alert EventListener
-  const okButton = document.querySelector('#customAlert button');
+  const okButton = document.getElementById('alert-ok-button');
   if (okButton) {
     okButton.addEventListener('click', closeAlert);
   }
+
 
 });
 
