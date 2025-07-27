@@ -39,7 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const de22Input = document.getElementById('de22-input');
   if (de22Input) {
     de22Input.value = de22Input.value.toUpperCase();
-    de22Input.addEventListener('input', displayParsedData);    
+
+    // Listen for input and auto-capitalize
+    de22Input.addEventListener('input', () => {
+      de22Input.value = de22Input.value.toUpperCase();
+      displayParsedData();
+    });
   }
 
   // Button Display Definition EventListener
@@ -134,14 +139,14 @@ document.addEventListener('click', function (event) {
 
 // Paste fro
 document.getElementById("pasteButton").addEventListener("click", async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      document.getElementById("json-input").value = text;
-      parseAXL(); // Automatically parse the pasted JSON
-    } catch (err) {
-      console.error("Failed to read clipboard contents: ", err);
-    }
-  });
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById("json-input").value = text;
+    parseAXL(); // Automatically parse the pasted JSON
+  } catch (err) {
+    console.error("Failed to read clipboard contents: ", err);
+  }
+});
 
 
 // Screen handling
@@ -197,9 +202,9 @@ function parseAXL() {
   const output = document.getElementById('json-output');
   const copyButton = document.getElementById('copy-button');
 
-  if(!input){
+  if (!input) {
     if (!jsonInputwasPreviouslyFilled) {
-       alert("AXL data is empty. Please enter the data.");
+      alert("AXL data is empty. Please enter the data.");
     }
     document.getElementById('json-output').value = '';
     output.style.display = 'none'; // Hide the output container
