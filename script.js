@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("Copy Button clicked"); // Add this line
   }
 
-
 });
 
 // Screen handling
