@@ -720,44 +720,21 @@
   <!-- About Section -->
   <div id="cba-mti-parser" class="screen" style="margin-bottom: 30px;">
     <h1>CBA MTI Parser</h1>
-    <!-- <p>Learn more cba-mti-parser the creative mind behind this space and the journey of artistic exploration.</p> -->
-    <textarea id="combinedInput" placeholder='Paste your MTI data with "Breakdown :" markers'
-      oninput="parseCombined()"></textarea>
-    <!-- <button style="margin-top: 10px; margin-bottom: 10px; width: 120px;" onclick="parseCombined()">Parse</button> -->
-
+    <textarea id="mti-data-input" placeholder='Paste your MTI data with "Breakdown :" markers'></textarea>
     <div id="isoTables" class="tables-container">
-
-      <!-- <div class="table-box" style="display: none;">
-      <h2>Request</h2>
-      <div id="requestTable" style="overflow: visible; height: auto;"></div>
-    </div>
-    <div class="table-box" style="display: none;">
-      <h2>Response</h2>
-      <div id="responseTable" style="overflow: visible; height: auto;"> </div>
-    </div>
-	</div> -->
-
-
       <div id="tabWrapper" style="display: none;">
         <ul class="tabs">
           <li class="tab active" onclick="showTab('request')">Request</li>
           <li class="tab" onclick="showTab('response')">Response</li>
         </ul>
-
         <div class="tab-content" id="request" style="display: block;">
           <div id="requestTable" style="overflow: visible; height: auto; margin-bottom: 80px;"></div>
         </div>
-
         <div class="tab-content" id="response" style="display: none;">
           <div id="responseTable" style="overflow: visible; height: 100%; margin-bottom: 80px;"></div>
         </div>
       </div>
-
     </div>
-
-
-
-
     <button class="btn back-btn" data-screen="home">Back</button>
   </div>
 

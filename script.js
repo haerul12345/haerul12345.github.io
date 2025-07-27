@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // AXL Input EventListener
-  const input = document.getElementById("json-input");
-  if (input) {
-    input.addEventListener("input", parseAXL);
-    console.log("Data entered, input:", input); // Add this line
+  const axlInput = document.getElementById("json-input");
+  if (axlInput) {
+    axlInput.addEventListener("input", parseAXL);
+    console.log("Data entered, input:", axlInput); // Add this line
   }
 
   // Copy Button EventListener
@@ -45,6 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const definitionButton = document.getElementById("definitionButton");
   if (definitionButton) {
     definitionButton.addEventListener("click", displayDefinitions);
+  }
+
+  // MTI Input EventListener
+  const mtiInput = document.getElementById("mti-data-input");
+  if (mtiInput) {
+    mtiInput.addEventListener("input", parseMTI);
+    console.log("Data entered, input:", mtiInput); // Add this line
   }
 
 });
@@ -226,7 +233,7 @@ function displayParsedData() {
     if (!wasPreviouslyFilled) {
       alert("DE22 data is empty. Please enter the data.");
     }
-    document.getElementById('parse-output').value = ''; 
+    document.getElementById('parse-output').value = '';
     return;
   }
   wasPreviouslyFilled = true;
@@ -597,4 +604,59 @@ function displayDefinitions() {
     document.body.appendChild(container);
     button.textContent = 'Hide Definitions';
   }
+}
+
+// CBA MTI Request and Response Parser
+function parseMTI() {
+  const input = document.getElementById('combinedInput').value;
+
+  const requestMatch = input.match(/Request\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
+  const responseMatch = input.match(/Response\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
+
+  const requestTable = document.getElementById('requestTable');
+  const responseTable = document.getElementById('responseTable');
+
+  requestTable.innerHTML = '';
+  responseTable.innerHTML = '';
+
+  try {
+    // Attempt to parse the request JSON from the matched string
+    const requestJSON = requestMatch ? JSON.parse(requestMatch[1]) : null;
+
+    // Check if the parsed JSON is valid and generate the table
+    if (requestJSON) {
+      requestTable.innerHTML = generateISOTable(requestJSON, true); // true indicates it's a request
+      document.getElementById('tabWrapper').style.display = 'block'
+    } else {
+      requestTable.innerHTML = '<p>No valid request JSON found.</p>';
+    }
+  } catch (error) {
+    // Handle any parsing errors
+    requestTable.innerHTML = '<p>Invalid JSON in request.</p>';
+    console.error('Error parsing request JSON:', error);
+  }
+
+  try {
+    // Attempt to parse the response JSON from the matched string
+    const responseJSON = responseMatch ? JSON.parse(responseMatch[1]) : null;
+
+    // Check if the parsed JSON is valid and generate the table
+    if (responseJSON) {
+      responseTable.innerHTML = generateISOTable(responseJSON, false); // false indicates it's a response
+      document.getElementById('tabWrapper').style.display = 'block'
+    } else {
+      responseTable.innerHTML = '<p>No valid response JSON found.</p>';
+    }
+  } catch (error) {
+    // Handle any parsing errors
+    responseTable.innerHTML = '<p>Invalid JSON in response.</p>';
+    console.error('Error parsing response JSON:', error);
+  }
+
+  // Show all elements with class "table-box"
+  const tableBoxes = document.querySelectorAll('.table-box');
+  tableBoxes.forEach(box => {
+    box.style.display = 'block';
+  });
+
 }
