@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const definitionButton = document.getElementById("definitionButton");
   if (definitionButton) {
     definitionButton.addEventListener("click", displayDefinitions);
+    console.log("Definition Button clicked"); // Add this line
   }
 
   // MTI Input EventListener
