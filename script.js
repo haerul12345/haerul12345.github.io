@@ -1224,11 +1224,11 @@ function parseMTI() {
   requestTable.innerHTML = '';
   responseTable.innerHTML = '';
 
-  isRequestJSONvalid = true;
-  isResponseJSONvalid = true;  
+  let isRequestJSONvalid = true;
+  let isResponseJSONvalid = true;  
 
-  isRequestJSONparsedOK = true;
-  isResponseJsonparsedOK = true;
+  let isRequestJSONparsedOK = true;
+  let isResponseJsonparsedOK = true;
 
   try {
     // Attempt to parse the request JSON from the matched string
