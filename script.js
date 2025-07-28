@@ -1303,8 +1303,10 @@ function parseMTI() {
   } else {
     if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
       showAlert('Invalid or missing request JSON.', 'warning');
+      showInfoAlert('Only Request data parsed successfully');
     } else if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
       showAlert('Invalid or missing response JSON.', 'warning');
+      showInfoAlert('Only Response data parsed successfully');
     } else {
       showInfoAlert('Request and response data parsed successfully');
     }
@@ -1439,7 +1441,7 @@ function parseHostRecord() {
     if (valueSelect) valueSelect.innerHTML = '';
 
     const output = document.getElementById('host-record-output');
-    
+
     // Remove output if not empty
     if (output && output.innerHTML.trim() !== '') {
       output.innerHTML = '';
