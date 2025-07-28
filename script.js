@@ -1284,7 +1284,7 @@ function parseMTI() {
     console.error('Error parsing response JSON:', error);
   }
 
-  if (!isRequestJSONvalid || !isRequestJSONparsedOK && !isResponseJSONvalid || !isResponseJsonparsedOK) {
+  if ((!isRequestJSONvalid || !isRequestJSONparsedOK) && (!isResponseJSONvalid || !isResponseJsonparsedOK)) {
     showAlert('Invalid or missing request and response JSON.', 'error');
   } else {
     if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
