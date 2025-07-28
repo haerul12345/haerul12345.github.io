@@ -1241,6 +1241,7 @@ function parseMTI() {
     } else {
       //showAlert('No valid request JSON found.', 'error');      
       //requestTable.innerHTML = '<p>No valid request JSON found.</p>';
+      //requestTable.innerHTML = '';
       isRequestJSONvalid = false;
     }
   } catch (error) {
@@ -1260,11 +1261,12 @@ function parseMTI() {
       document.getElementById('tabWrapper').style.display = 'block'
     } else {
       //responseTable.innerHTML = '<p>No valid response JSON found.</p>';
+      //responseTable.innerHTML = '';
       isResponseJSONvalid = false;
     }
   } catch (error) {
     // Handle any parsing errors
-    //responseTable.innerHTML = '<p>Invalid JSON in response.</p>';
+    //responseTable.innerHTML = '<p>Invalid JSON in response.</p>';    
     isResponseJsonparsedOK = false;
     console.error('Error parsing response JSON:', error);
   }
@@ -1272,10 +1274,10 @@ function parseMTI() {
   if(!isRequestJSONvalid || !isRequestJSONparsedOK && !isResponseJSONvalid || !isResponseJsonparsedOK) {
     showAlert('Invalid or missing request and response JSON.', 'error');
   } else {
-    if (!isRequestJSONvalid && !isRequestJSONparsedOK) {
+    if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
       showAlert('Invalid or missing request JSON.', 'error');
     }
-    if (!isResponseJSONvalid && !isResponseJsonparsedOK) {
+    if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
       showAlert('Invalid or missing response JSON.', 'error');
     }
   }
