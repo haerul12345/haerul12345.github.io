@@ -1305,7 +1305,7 @@ function parseMTI() {
       showAlert('Invalid or missing request JSON.', 'warning');
     } else if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
       showAlert('Invalid or missing response JSON.', 'warning');
-    } else{
+    } else {
       showInfoAlert('Request and response data parsed successfully');
     }
   }
@@ -1428,6 +1428,26 @@ function parseHostRecord() {
       alert("Host Record data is empty. Please enter the data.");
     }
     document.getElementById('inputRecord').value = '';
+
+
+    // Close all record sections if they exist
+    const allSections = document.querySelectorAll('.section');
+    allSections.forEach(section => {
+      const sectionContent = section.querySelector('.section-content');
+      if (sectionContent) {
+        sectionContent.style.display = 'none';
+      }
+    });
+
+    // Clear dropdown options
+    const recordSelect = document.getElementById('recordSelect');
+    const tagSelect = document.getElementById('tagSelect');
+    const valueSelect = document.getElementById('valueSelect');
+
+    if (recordSelect) recordSelect.innerHTML = '';
+    if (tagSelect) tagSelect.innerHTML = '';
+    if (valueSelect) valueSelect.innerHTML = '';
+
     showInfoAlert('Host Record Data cleared. Please enter new data.');
     return;
   }
@@ -1438,7 +1458,7 @@ function parseHostRecord() {
     console.error("Output container not found.");
     return;
   }
-  
+
   output.innerHTML = '';
 
   let data;
