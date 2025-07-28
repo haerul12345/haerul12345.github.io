@@ -1275,10 +1275,10 @@ function parseMTI() {
     showAlert('Invalid or missing request and response JSON.', 'error');
   } else {
     if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
-      showAlert('Invalid or missing request JSON.', 'error');
+      showAlert('Invalid or missing request JSON.', 'warning');
     }
     if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
-      showAlert('Invalid or missing response JSON.', 'error');
+      showAlert('Invalid or missing response JSON.', 'warning');
     }
   }
     
