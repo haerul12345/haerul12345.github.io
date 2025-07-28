@@ -1582,7 +1582,14 @@ function parseHostRecord() {
       });
       showInfoAlert(`Host Record parsed successfully!`);
     } else {
-      sectionContent.innerHTML = '<p>No valid records found.</p>';
+      //sectionContent.innerHTML = '<p>No valid records found.</p>';
+      showAlert('No valid records found.', 'warning');
+      const output = document.getElementById('host-record-output');
+      // Remove output if not empty
+      if (output && output.innerHTML.trim() !== '') {
+        output.innerHTML = '';
+      }
+
     }
 
     section.appendChild(sectionHeader);
