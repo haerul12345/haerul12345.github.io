@@ -644,6 +644,32 @@
       align-items: center;
     }
 
+    .info-alert {
+      position: fixed;
+      bottom: 30px;
+      right: 140px;
+      transform: translate(-50%);
+      transform: translateY(20px);
+      background-color: rgba(255, 255, 255, 0.6);
+      color: #00796b;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      font-family: sans-serif;
+      font-size: 14px;
+      opacity: 0;
+      max-width: 80%;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 9999;
+    }
+
+    .info-alert.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -657,9 +683,6 @@
     }
   </style>
 </head>
-
-
-
 
 <body>
 
@@ -781,7 +804,12 @@
     <div id="alertText"></div>
     <button id="alert-ok-button">OK</button>
   </div>
+
+  <div id="infoAlert" class="info-alert"></div>
+
   <script type="module" src="script.js"></script>
+
 </body>
+
 
 </html>

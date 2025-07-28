@@ -219,6 +219,7 @@ function parseAXL() {
       output.innerHTML = generateTable(jsonData.event.resource);
       output.style.display = 'block'; // Show the copy button
       copyButton.style.display = 'block'; // Show the copy button
+      showInfoAlert(`Data parsed successfully!`);
     } else {
       output.textContent = 'No resource key found in the JSON data';
       copyButton.style.display = 'none'; // Hide the copy button
@@ -317,6 +318,18 @@ function showAlert(message, type = 'info') {
   alertText.innerHTML = icon + `<div style="text-align: center;">${message}</div>`;
   document.getElementById("overlay").style.display = "block";
   document.getElementById('customAlert').style.display = 'block';
+}
+
+// Info Alert function
+function showInfoAlert(message) {
+  const alertBox = document.getElementById('infoAlert');
+  alertBox.innerHTML = `✅ ${message}`;
+  //console.log("showInfoAlert called with message:", message); // ✅ Console log added
+
+  alertBox.classList.add('show');
+  setTimeout(() => {
+    alertBox.classList.remove('show');
+  }, 2500); // Show for 3 seconds
 }
 
 // Close Alert function
@@ -1225,7 +1238,7 @@ function parseMTI() {
   responseTable.innerHTML = '';
 
   let isRequestJSONvalid = true;
-  let isResponseJSONvalid = true;  
+  let isResponseJSONvalid = true;
 
   let isRequestJSONparsedOK = true;
   let isResponseJsonparsedOK = true;
@@ -1271,17 +1284,18 @@ function parseMTI() {
     console.error('Error parsing response JSON:', error);
   }
 
-  if(!isRequestJSONvalid || !isRequestJSONparsedOK && !isResponseJSONvalid || !isResponseJsonparsedOK) {
+  if (!isRequestJSONvalid || !isRequestJSONparsedOK && !isResponseJSONvalid || !isResponseJsonparsedOK) {
     showAlert('Invalid or missing request and response JSON.', 'error');
   } else {
     if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
       showAlert('Invalid or missing request JSON.', 'warning');
-    }
-    if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
+    } else if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
       showAlert('Invalid or missing response JSON.', 'warning');
+    } else{
+      showInfoAlert('Request and response data parsed successfully');
     }
   }
-    
+
   // Show all elements with class "table-box"
   const tableBoxes = document.querySelectorAll('.table-box');
   tableBoxes.forEach(box => {
@@ -1406,7 +1420,6 @@ function parseHostRecord() {
   } catch (e) {
     //output.innerHTML = '<p style="color:red;">Invalid JSON format.</p>';
     showAlert('Invalid format', 'error');
-
     return;
   }
 
@@ -1497,6 +1510,7 @@ function parseHostRecord() {
         recordDiv.appendChild(content);
         sectionContent.appendChild(recordDiv);
       });
+      showInfoAlert(`Host Record parsed successfully!`);
     } else {
       sectionContent.innerHTML = '<p>No valid records found.</p>';
     }
