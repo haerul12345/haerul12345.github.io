@@ -365,7 +365,7 @@ function displayParsedData() {
 
   if (!cardData) {
     if (!wasPreviouslyFilled) {
-      showAlert("DE22 data is empty. Please enter the data.",' warning');
+      showAlert("DE22 data is empty. Please enter the data.", ' warning');
     }
     document.getElementById('parse-output').value = '';
     return;
@@ -1245,6 +1245,15 @@ function parseMTI() {
   if (!input) {
     if (!dataMTIwasPreviouslyFilled) {
       showAlert("MTI data is empty. Please enter the data.", 'warning');
+    }
+
+    const tableResponse = document.getElementById('responseTable');
+    const tableRequest = document.getElementById('requestTable');
+    if (tableResponse) {
+      tableResponse.innerHTML = '';
+    }
+    if (tableRequest) {
+      tableRequest.innerHTML = '';
     }
     document.getElementById('mti-data-input').value = '';
     showInfoAlert('MTI Data cleared. Please enter new data.');
