@@ -204,7 +204,7 @@ function parseAXL() {
 
   if (!input) {
     if (!jsonInputwasPreviouslyFilled) {
-      alert("AXL data is empty. Please enter the data.");
+      showAlert("AXL data is empty. Please enter the data.", "warning");
     }
     document.getElementById('json-output').value = '';
     output.style.display = 'none'; // Hide the output container
@@ -222,7 +222,8 @@ function parseAXL() {
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
     } else {
-      output.textContent = 'No resource key found in the JSON data';
+      //output.textContent = 'No resource key found in the JSON data';
+      showAlert(`No resource key found in the JSON data`, "error");
       copyButton.style.display = 'none'; // Hide the copy button
     }
 
@@ -364,7 +365,7 @@ function displayParsedData() {
 
   if (!cardData) {
     if (!wasPreviouslyFilled) {
-      alert("DE22 data is empty. Please enter the data.");
+      showAlert("DE22 data is empty. Please enter the data.",' warning');
     }
     document.getElementById('parse-output').value = '';
     return;
@@ -1243,7 +1244,7 @@ function parseMTI() {
 
   if (!input) {
     if (!dataMTIwasPreviouslyFilled) {
-      alert("MTI data is empty. Please enter the data.");
+      showAlert("MTI data is empty. Please enter the data.", 'warning');
     }
     document.getElementById('mti-data-input').value = '';
     showInfoAlert('MTI Data cleared. Please enter new data.');
@@ -1442,7 +1443,7 @@ function parseHostRecord() {
 
   if (!raw) {
     if (!hostRecordwasPreviouslyFilled) {
-      alert("Host Record data is empty. Please enter the data.");
+      showAlert("Host Record data is empty. Please enter the data.", 'warning');
     }
     document.getElementById('inputRecord').value = '';
 
@@ -1593,7 +1594,8 @@ function loadFileContent(event) {
   const isAllowed = allowedTypes.includes(file.type) || file.name.match(/\\.(json|txt)$/i);
 
   if (!isAllowed) {
-    alert("Only .txt or .json files are allowed.");
+    //alert("Only .txt or .json files are allowed.");
+    showAlert("Only .txt or .json files are allowed.", "warning");
     return;
   }
 
