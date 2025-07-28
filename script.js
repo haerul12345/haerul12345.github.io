@@ -1429,16 +1429,6 @@ function parseHostRecord() {
     }
     document.getElementById('inputRecord').value = '';
 
-
-    // Close all record sections if they exist
-    const allSections = document.querySelectorAll('.section');
-    allSections.forEach(section => {
-      const sectionContent = section.querySelector('.section-content');
-      if (sectionContent) {
-        sectionContent.style.display = 'none';
-      }
-    });
-
     // Clear dropdown options
     const recordSelect = document.getElementById('recordSelect');
     const tagSelect = document.getElementById('tagSelect');
@@ -1448,12 +1438,18 @@ function parseHostRecord() {
     if (tagSelect) tagSelect.innerHTML = '';
     if (valueSelect) valueSelect.innerHTML = '';
 
+    const output = document.getElementById('host-record-output');
+    
+    // Remove output if not empty
+    if (output && output.innerHTML.trim() !== '') {
+      output.innerHTML = '';
+    }
     showInfoAlert('Host Record Data cleared. Please enter new data.');
     return;
   }
   hostRecordwasPreviouslyFilled = true;
 
-  const output = document.getElementById('output');
+  const output = document.getElementById('host-record-output');
   if (!output) {
     console.error("Output container not found.");
     return;
@@ -1711,7 +1707,7 @@ function resetView() {
 // This function checks the input for valid JSON, generates a timestamped filename, and triggers a
 function validateAndSaveJSON() {
   const raw = document.getElementById('inputRecord')?.value;
-  const output = document.getElementById('output');
+  const output = document.getElementById('host-record-output');
   if (!output) {
     console.error("Output container not found.");
     return;
