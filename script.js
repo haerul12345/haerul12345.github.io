@@ -137,7 +137,7 @@ document.addEventListener('click', function (event) {
   }
 });
 
-// Paste fro
+// Paste from Clipboard EventListener
 document.getElementById("pasteButton").addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();
@@ -1224,6 +1224,12 @@ function parseMTI() {
   requestTable.innerHTML = '';
   responseTable.innerHTML = '';
 
+  isRequestJSONvalid = true;
+  isResponseJSONvalid = true;  
+
+  isRequestJSONparsedOK = true;
+  isResponseJsonparsedOK = true;
+
   try {
     // Attempt to parse the request JSON from the matched string
     const requestJSON = requestMatch ? JSON.parse(requestMatch[1]) : null;
@@ -1233,11 +1239,14 @@ function parseMTI() {
       requestTable.innerHTML = generateISOTable(requestJSON, true); // true indicates it's a request
       document.getElementById('tabWrapper').style.display = 'block'
     } else {
-      requestTable.innerHTML = '<p>No valid request JSON found.</p>';
+      //showAlert('No valid request JSON found.', 'error');      
+      //requestTable.innerHTML = '<p>No valid request JSON found.</p>';
+      isRequestJSONvalid = false;
     }
   } catch (error) {
     // Handle any parsing errors
-    requestTable.innerHTML = '<p>Invalid JSON in request.</p>';
+    //requestTable.innerHTML = '<p>Invalid JSON in request.</p>';
+    isRequestJSONparsedOK = false;
     console.error('Error parsing request JSON:', error);
   }
 
@@ -1250,14 +1259,27 @@ function parseMTI() {
       responseTable.innerHTML = generateISOTable(responseJSON, false); // false indicates it's a response
       document.getElementById('tabWrapper').style.display = 'block'
     } else {
-      responseTable.innerHTML = '<p>No valid response JSON found.</p>';
+      //responseTable.innerHTML = '<p>No valid response JSON found.</p>';
+      isResponseJSONvalid = false;
     }
   } catch (error) {
     // Handle any parsing errors
-    responseTable.innerHTML = '<p>Invalid JSON in response.</p>';
+    //responseTable.innerHTML = '<p>Invalid JSON in response.</p>';
+    isResponseJsonparsedOK = false;
     console.error('Error parsing response JSON:', error);
   }
 
+  if(!isRequestJSONvalid || !isRequestJSONparsedOK && !isResponseJSONvalid || !isResponseJsonparsedOK) {
+    showAlert('Invalid or missing request and response JSON.', 'error');
+  } else {
+    if (!isRequestJSONvalid && !isRequestJSONparsedOK) {
+      showAlert('Invalid or missing request JSON.', 'error');
+    }
+    if (!isResponseJSONvalid && !isResponseJsonparsedOK) {
+      showAlert('Invalid or missing response JSON.', 'error');
+    }
+  }
+    
   // Show all elements with class "table-box"
   const tableBoxes = document.querySelectorAll('.table-box');
   tableBoxes.forEach(box => {
