@@ -209,6 +209,7 @@ function parseAXL() {
     document.getElementById('json-output').value = '';
     output.style.display = 'none'; // Hide the output container
     copyButton.style.display = 'none'; // Hide the copy button
+    showInfoAlert('Data cleared. Please enter new data.');
     return;
   }
   jsonInputwasPreviouslyFilled = true;
@@ -1223,10 +1224,23 @@ function generateISOTable(json, isRequest) {
   return table;
 }
 
+// Variable to track data MTI
+let dataMTIwasPreviouslyFilled = false;
+
 // Function to parse MTI data from input and generate tables
 // This function extracts request and response JSON from the input, parses them, and generates corresponding tables
 function parseMTI() {
   const input = document.getElementById('mti-data-input').value;
+
+  if (!input) {
+    if (!dataMTIwasPreviouslyFilled) {
+      alert("MTI data is empty. Please enter the data.");
+    }
+    document.getElementById('mti-data-input').value = '';
+    showInfoAlert('MTI Data cleared. Please enter new data.');
+    return;
+  }
+  dataMTIwasPreviouslyFilled = true;
 
   const requestMatch = input.match(/Request\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
   const responseMatch = input.match(/Response\s*:\s*.*?Breakdown\s*:\s*(\{[\s\S]*?\})/i);
@@ -1403,15 +1417,28 @@ function toggleContentById(id) {
   }
 }
 
+let hostRecordwasPreviouslyFilled = false;
+
 //  Function to parse host record from input and display it
 function parseHostRecord() {
   const raw = document.getElementById('inputRecord')?.value;
+
+  if (!raw) {
+    if (!hostRecordwasPreviouslyFilled) {
+      alert("Host Record data is empty. Please enter the data.");
+    }
+    document.getElementById('inputRecord').value = '';
+    showInfoAlert('Host Record Data cleared. Please enter new data.');
+    return;
+  }
+  hostRecordwasPreviouslyFilled = true;
+
   const output = document.getElementById('output');
   if (!output) {
     console.error("Output container not found.");
     return;
   }
-
+  
   output.innerHTML = '';
 
   let data;
