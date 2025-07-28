@@ -312,13 +312,17 @@ const alertIcons = {
   </div>`
 };
 
+// variable to store the alert callback function
+let alertCallback = null;
+
 // Alert Message function
-function showAlert(message, type = 'info') {
+function showAlert(message, type = 'info', callback = null) {
   const icon = alertIcons[type] || alertIcons.info;
   const alertText = document.getElementById("alertText");
   alertText.innerHTML = icon + `<div style="text-align: center;">${message}</div>`;
   document.getElementById("overlay").style.display = "block";
   document.getElementById('customAlert').style.display = 'block';
+  alertCallback = callback; // Store the callback
 }
 
 // Info Alert function
@@ -337,6 +341,11 @@ function showInfoAlert(message) {
 function closeAlert() {
   document.getElementById('customAlert').style.display = 'none';
   document.getElementById("overlay").style.display = "none";
+
+  if (typeof alertCallback === 'function') {
+    alertCallback();
+    alertCallback = null; // Reset after calling
+  }
 }
 
 // DE22 Parser code
@@ -1302,11 +1311,17 @@ function parseMTI() {
     showAlert('Invalid or missing request and response JSON.', 'error');
   } else {
     if (!isRequestJSONvalid || !isRequestJSONparsedOK) {
-      showAlert('Invalid or missing request JSON.', 'warning');
-      showInfoAlert('Only Response data parsed successfully');
+      showAlert(
+        'Invalid or missing request JSON.',
+        'warning',
+        () => showInfoAlert('Only Response data parsed successfully')
+      );
     } else if (!isResponseJSONvalid || !isResponseJsonparsedOK) {
-      showAlert('Invalid or missing response JSON.', 'warning');
-      showInfoAlert('Only Request data parsed successfully');
+      showAlert(
+        'Invalid or missing response JSON.',
+        'warning',
+        () => showInfoAlert('Only Request data parsed successfully')
+      );
     } else {
       showInfoAlert('Request and response data parsed successfully');
     }
