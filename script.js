@@ -224,13 +224,14 @@ function parseJSON() {
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
     }
-    // This is for API parser - createAt
-    else if (jsonData.createdAt) {
+    // This is for API parser - createAt & hostResponseData
+    else if (jsonData.createdAt || jsonData.hostResponseData) {
       output.innerHTML = generateTable(jsonData);
       output.style.display = 'block'; // Show the copy button
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
-    } else {
+    } 
+    else {
       //output.textContent = 'No resource key found in the JSON data';
       showAlert(`No resource key found in the JSON data`, "error");
       copyButton.style.display = 'none'; // Hide the copy button
