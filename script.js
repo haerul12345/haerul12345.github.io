@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // Application version
-  const appVersion = "3.0";
+  const appVersion = "3.1";
   //document.getElementById("app-version").textContent = `ParserSweet Version: ${appVersion} © 2025 hji`;
   document.getElementById("app-version").textContent = `Version: ${appVersion} © 2025 hji`;
 
@@ -143,7 +143,7 @@ document.getElementById("pasteButton").addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();
     document.getElementById("json-input").value = text;
-    parseAXL(); // Automatically parse the pasted JSON
+    parseJSON(); // Automatically parse the pasted JSON
   } catch (err) {
     console.error("Failed to read clipboard contents: ", err);
   }
@@ -197,8 +197,8 @@ function showScreen(screenId) {
 // Variable to track if DE22 input was previously filled
 let jsonInputwasPreviouslyFilled = false;
 
-// AXL Parser code
-function parseAXL() {
+// JSON Parser code
+function parseJSON() {
   const input = document.getElementById('json-input').value;
   const output = document.getElementById('json-output');
   const copyButton = document.getElementById('copy-button');
@@ -217,19 +217,19 @@ function parseAXL() {
 
   try {
     const jsonData = JSON.parse(input);
+    // This is for axl response parser
     if (jsonData.event && jsonData.event.resource) {
       output.innerHTML = generateTable(jsonData.event.resource);
       output.style.display = 'block'; // Show the copy button
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
-    
-    
-    } else if(jsonData.createdAt){    
-      output.innerHTML = generateTable(jsonData.createdAt);
+    }
+    // This is for API parser - createAt
+    else if (jsonData.createdAt) {
+      output.innerHTML = generateTable(jsonData);
       output.style.display = 'block'; // Show the copy button
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
-
     } else {
       //output.textContent = 'No resource key found in the JSON data';
       showAlert(`No resource key found in the JSON data`, "error");
@@ -264,7 +264,19 @@ function formatTableRows(data, indentLevel = 0) {
         rows += `<tr><td>${indent}${key}</td><td></td></tr>`;
         rows += formatTableRows(value, indentLevel + 1);
       } else {
-        rows += `<tr><td>${indent}${key}</td><td>${value}</td></tr>`;
+        // Special handling for 'iccData' key - for createdAt key
+        if (key === 'iccData') {
+          let rawValue = String(value);
+
+          // Parse TLV
+          const tlvTable = parseTLV(rawValue);
+          // Combine raw value and TLV table in one cell
+          const combinedValue = `<div><strong>Raw:</strong> ${rawValue}</div><div style="margin-top:8px; overflow:auto;">${tlvTable}</div>`;
+          rows += `<tr><td>${indent}${key}</td><td>${combinedValue}</td></tr>`;
+
+        } else {
+          rows += `<tr><td>${indent}${key}</td><td>${value}</td></tr>`;
+        }
       }
     }
   }
