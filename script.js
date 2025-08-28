@@ -222,6 +222,14 @@ function parseAXL() {
       output.style.display = 'block'; // Show the copy button
       copyButton.style.display = 'block'; // Show the copy button
       showInfoAlert(`Data parsed successfully!`);
+    
+    
+    } else if(jsonData.createdAt){    
+      output.innerHTML = generateTable(jsonData.createdAt);
+      output.style.display = 'block'; // Show the copy button
+      copyButton.style.display = 'block'; // Show the copy button
+      showInfoAlert(`Data parsed successfully!`);
+
     } else {
       //output.textContent = 'No resource key found in the JSON data';
       showAlert(`No resource key found in the JSON data`, "error");
