@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // AXL Input EventListener
-  const axlInput = document.getElementById("json-input");
-  if (axlInput) {
-    axlInput.addEventListener("input", parseAXL);
-    console.log("Data entered, input:", axlInput); // Add this line
+  // JSON Input EventListener
+  const jsonInput = document.getElementById("json-input");
+  if (jsonInput) {
+    jsonInput.addEventListener("input", parseJSON);
+    console.log("Data entered, input:", jsonInput); // Add this line
   }
 
   // Copy Button EventListener
@@ -205,7 +205,7 @@ function parseJSON() {
 
   if (!input) {
     if (!jsonInputwasPreviouslyFilled) {
-      showAlert("AXL data is empty. Please enter the data.", "warning");
+      showAlert("JSON data is empty. Please enter the data.", "warning");
     }
     document.getElementById('json-output').value = '';
     output.style.display = 'none'; // Hide the output container
